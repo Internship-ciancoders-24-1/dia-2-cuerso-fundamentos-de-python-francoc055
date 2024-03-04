@@ -1,42 +1,54 @@
-clientes = ["agustin", "lucia", "lorenzo"]
+clientes = [
+    {
+        "name": "agustin",
+        "age": 24,
+        "email":"agus@gmail.com"
+    },
+    {
+        "name": "lucia",
+        "age": 26,
+        "email":"lucia@gmail.com"
+    }
+]
 
 def list_clients():
     for client in clientes:
-        print(f"-{client}")
+        print("----")
+        for key, value in client.items():
+            print(key, ":", value)
 
-def create_client(name):
+def create_client(client):
     global clientes
-    if len(name) == 0 or name in clientes:
-        print("Error.")
-        return
     
-    clientes.append(name)
+    clientes.append(client)
     print("Cliente creado")
     list_clients()
     
 def update_client(name, new_name):
     global clientes
-    if name in clientes:
-        index = clientes.index(name) 
-        clientes[index] = new_name
-        print("Cliente actualizado")
-        list_clients()
+    for client in clientes:
+        if name == client["name"]:
+            client['name'] = new_name
+            print("Cliente actualizado")
+            list_clients()
     else:
         print("No existe el cliente")
 
 def delete_client(name):
     global clientes
-    if name in clientes:
-        clientes.remove(name)
-        print("Cliente eliminado")
-        list_clients()
-    else:
-        print("No existe el cliente")
+    for client in clientes:
+        if name == client["name"]:
+            clientes.remove(client)
+            print(f"Cliente {name} eliminado.")
+            return
+    print(f"Cliente {name} no encontrado en la lista.")
+
+
 
 def search_client(name):
     for client in clientes:
-        if client == name:
-            return name
+        if name == client["name"]:
+            return client
         
     return None
 
@@ -54,8 +66,15 @@ if __name__ == '__main__':
     if inp == "A":
         list_clients()
     elif inp == "B":
-        name = input("Escriba un nombre: ")
-        create_client(name)
+        name = input("Escriba su nombre: ")
+        age = input("Escriba su edad: ")
+        email = input("Escriba su email: ")
+        client = {
+            "name": name,
+            "age": age,
+            "email": email
+        }
+        create_client(client)
     elif inp == "C":
         name = input("Escriba un nombre: ")
         new_name = input("Nombre actualizado: ")
@@ -69,7 +88,7 @@ if __name__ == '__main__':
         if not found:
             print(f"No existe {name}") 
         else:
-            print(f"Cliente: {name}")
+            print(f"Cliente: {found['name']} | {found['age']} | {found['email']}")
         
     else:
         print("No existe el comando")
